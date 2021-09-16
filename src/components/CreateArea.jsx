@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import Zoom from '@mui/material/Zoom';
 
 function CreateArea(props) {
   const [note, setNote] = useState({ title: '', content: '' });
+  const [ifClicked, setIfClicked] = useState(false);
   function handleChange(e) {
     const { name, value } = e.target;
     setNote(prev => {
@@ -17,21 +20,28 @@ function CreateArea(props) {
   }
   return (
     <div>
-      <form onSubmit={e => e.preventDefault()}>
-        <input
-          onChange={handleChange}
-          name='title'
-          placeholder='Title'
-          value={note.title}
-        />
+      <form className='create-note' onSubmit={e => e.preventDefault()}>
+        {ifClicked && (
+          <input
+            onChange={handleChange}
+            name='title'
+            placeholder='Title'
+            value={note.title}
+          />
+        )}
         <textarea
           onChange={handleChange}
           name='content'
           placeholder='Take a note...'
-          rows='3'
+          rows={ifClicked ? 3 : 1}
           value={note.content}
+          onClick={() => setIfClicked(true)}
         />
-        <button onClick={handleClick}>Add</button>
+        <Zoom in={ifClicked}>
+          <button onClick={handleClick}>
+            <AddIcon />
+          </button>
+        </Zoom>
       </form>
     </div>
   );
